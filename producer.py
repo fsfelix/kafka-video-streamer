@@ -9,17 +9,19 @@ topic = 'video-stream'
 def video_producer(video):
     video = cv2.VideoCapture(video)
     print "starting"
+    # video.set(cv2.CAP_PROP_FRAME_WIDTH, 20)
+    # video.set(cv2.CAP_PROP_FRAME_HEIGHT, 10)
 
     while (video.isOpened):
         success, image = video.read()
 
-        if not sucess:
+        if not success:
             break
 
         ret, jpeg = cv2.imencode('.png', image)
+        print jpeg.size
         producer.send_messages(topic, jpeg.tobytes())
 
-        time.sleep(0.2)
 
     video.release()
     print "done"
